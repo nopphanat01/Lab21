@@ -17,14 +17,11 @@
 
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
 
-TCHAR szClassName[ ] = _T("CodeBlocksWindowsApp");
+TCHAR szClassName[] = _T("CodeBlocksWindowsApp");
 
 HWND hwndNum1, hwndNum2, hwndAdd, hwndSubtract, hwndMultiply, hwndDivide;
 
-int WINAPI WinMain (HINSTANCE hThisInstance,
-                     HINSTANCE hPrevInstance,
-                     LPSTR lpszArgument,
-                     int nCmdShow)
+int WINAPI WinMain (HINSTANCE hThisInstance, HINSTANCE hPrevInstance, LPSTR lpszArgument, int nCmdShow)
 {
     HWND hwnd;
     MSG messages;
@@ -34,37 +31,37 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
     wincl.lpszClassName = szClassName;
     wincl.lpfnWndProc = WindowProcedure;
     wincl.style = CS_DBLCLKS;
-    wincl.cbSize = sizeof (WNDCLASSEX);
+    wincl.cbSize = sizeof(WNDCLASSEX);
 
-    wincl.hIcon = LoadIcon (NULL, IDI_APPLICATION);
-    wincl.hIconSm = LoadIcon (NULL, IDI_APPLICATION);
-    wincl.hCursor = LoadCursor (NULL, IDC_ARROW);
+    wincl.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+    wincl.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
+    wincl.hCursor = LoadCursor(NULL, IDC_ARROW);
     wincl.lpszMenuName = NULL;
     wincl.cbClsExtra = 0;
     wincl.cbWndExtra = 0;
-    wincl.hbrBackground = (HBRUSH) COLOR_BACKGROUND;
+    wincl.hbrBackground = CreateSolidBrush(RGB(255, 165, 0));
 
-    if (!RegisterClassEx (&wincl))
+    if (!RegisterClassEx(&wincl))
         return 0;
 
-    hwnd = CreateWindowEx (
-           0,
-           szClassName,
-           _T("My Calculator"),
-           WS_OVERLAPPEDWINDOW & ~WS_SIZEBOX & ~WS_MAXIMIZEBOX,
-           CW_USEDEFAULT,
-           CW_USEDEFAULT,
-           250,
-           200,
-           HWND_DESKTOP,
-           NULL,
-           hThisInstance,
-           NULL
-           );
+    hwnd = CreateWindowEx(
+        0,                   
+        szClassName,         
+        _T("My Calculator"),       
+        WS_OVERLAPPEDWINDOW & ~WS_SIZEBOX & ~WS_MAXIMIZEBOX,
+        CW_USEDEFAULT,       
+        CW_USEDEFAULT,       
+        250,                 
+        200,                 
+        HWND_DESKTOP,        
+        NULL,                
+        hThisInstance,       
+        NULL                 
+    );
 
-    ShowWindow (hwnd, nCmdShow);
+    ShowWindow(hwnd, nCmdShow);
 
-    while (GetMessage (&messages, NULL, 0, 0))
+    while (GetMessage(&messages, NULL, 0, 0))
     {
         TranslateMessage(&messages);
         DispatchMessage(&messages);
@@ -84,7 +81,7 @@ void ShowResult(int result) {
     RECT rect = { 0, 0, 300, 150 };
 
     HDC hdc = GetDC(hWndResult);
-    HBRUSH hBrush = CreateSolidBrush(RGB(255, 165, 0)); // สีส้ม
+    HBRUSH hBrush = CreateSolidBrush(RGB(0, 255, 0));
     FillRect(hdc, &rect, hBrush);
     DeleteObject(hBrush);
     ReleaseDC(hWndResult, hdc);
@@ -134,7 +131,6 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             hwndDivide = CreateWindowEx(0, _T("BUTTON"), _T("/"),
                 WS_CHILD | WS_VISIBLE,
                 140, 140, 50, 25, hwnd, (HMENU)ID_DIVIDE, NULL, NULL);
-
             break;
 
         case WM_COMMAND:
@@ -170,11 +166,10 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
             break;
 
         case WM_DESTROY:
-            PostQuitMessage (0);
+            PostQuitMessage(0);
             break;
-
         default:
-            return DefWindowProc (hwnd, message, wParam, lParam);
+            return DefWindowProc(hwnd, message, wParam, lParam);
     }
 
     return 0;
